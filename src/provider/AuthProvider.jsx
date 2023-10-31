@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import app from "../firebase/firebase.config";
-import { FacebookAuthProvider, GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import { FacebookAuthProvider, GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import axios from "axios";
 
 
 export const AuthContext = createContext();
@@ -18,26 +19,50 @@ const AuthProvider = ({ children }) => {
         return createUserWithEmailAndPassword(auth, email, password)
     }
 
-    const googleLogin = ()=>{
+    const logIn = (email, password) =>{
+        setLoading(true)
+        return signInWithEmailAndPassword(auth, email, password);
+    }
+
+    const googleLogin = () => {
         setLoading(true)
         return signInWithPopup(auth, provider);
     }
 
-    const facebookLogin =()=>{
+    const facebookLogin = () => {
         setLoading(true)
         return signInWithPopup(auth, fbProvider);
     }
 
-    const logOut = ()=>{
+    const logOut = () => {
         setLoading(true)
         return signOut(auth);
     }
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
+            const userEmail = currentUser?.email || user?.emai;
+            const loggedUser = { email: userEmail };
+
             setUser(currentUser)
             console.log(currentUser);
-            setLoading(false)
+            setLoading(false);
+            // for token if usesr exists
+            if (currentUser) {
+                axios.post('http://localhost:5000/jwt', loggedUser, {withCredentials: true})
+                    .then(res => {
+                        console.log('token response',res.data);
+                    })
+                    .catch(err =>{
+                        console.log(err);
+                    })
+            }
+            else{
+                axios.post('http://localhost:5000/logout', loggedUser, {withCredentials: true})
+                .then(res =>{
+                    console.log(res.data);
+                })
+            }
         });
         return () => {
             return unsubscribe()
@@ -47,11 +72,12 @@ const AuthProvider = ({ children }) => {
     const authInfo = {
         user,
         loading,
+        logIn,
         creatUser,
         googleLogin,
         facebookLogin,
         logOut
-        
+
 
     }
 

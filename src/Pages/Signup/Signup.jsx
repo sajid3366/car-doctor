@@ -6,6 +6,7 @@ import { AuthContext } from '../../provider/AuthProvider';
 const Signup = () => {
 
     const {creatUser} = useContext(AuthContext)
+    
 
     const handleSignup = e =>{
         e.preventDefault()
@@ -15,7 +16,7 @@ const Signup = () => {
         const email = form.email.value;
         const password = form.password.value;
         const user = {
-            name,email,password
+            displayName: name,email,password
         }
 
         console.log(user);
@@ -67,7 +68,7 @@ const Signup = () => {
                         <div>
                             
                         </div>
-                        <p>Already have an account? <Link className='text-red-600' to="/login">Login</Link></p>
+                        <p className='text-center'>Already have an account? <Link className='text-red-600' to="/login">Login</Link></p>
                     </form>
                 </div>
             </div>
