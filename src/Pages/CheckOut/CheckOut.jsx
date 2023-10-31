@@ -34,7 +34,7 @@ const CheckOut = () => {
 
         const checkOut = { name, email, date, price }
         console.log(checkOut);
-        axios.post('http://localhost:5000/checkout', checkOut)
+        axios.post('https://car-doctor-server-jet-sigma.vercel.app/checkout', checkOut)
             .then(res => {
                 console.log(res.data);
                 if (res.data.insertedId) {

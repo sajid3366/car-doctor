@@ -49,7 +49,7 @@ const AuthProvider = ({ children }) => {
             setLoading(false);
             // for token if usesr exists
             if (currentUser) {
-                axios.post('http://localhost:5000/jwt', loggedUser, {withCredentials: true})
+                axios.post('https://car-doctor-server-jet-sigma.vercel.app/jwt', loggedUser, {withCredentials: true})
                     .then(res => {
                         console.log('token response',res.data);
                     })
@@ -58,7 +58,7 @@ const AuthProvider = ({ children }) => {
                     })
             }
             else{
-                axios.post('http://localhost:5000/logout', loggedUser, {withCredentials: true})
+                axios.post('https://car-doctor-server-jet-sigma.vercel.app/logout', loggedUser, {withCredentials: true})
                 .then(res =>{
                     console.log(res.data);
                 })

@@ -1,20 +1,20 @@
-import axios from "axios";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import CheckOutDetails from "./CheckOutDetails";
+import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 
 const MyOrder = () => {
     const { user } = useContext(AuthContext)
     const [orders, setOrders] = useState([])
+    const axiosSecure = UseAxiosSecure();
 
-    axios.get(`http://localhost:5000/checkout/${user.email}`, {withCredentials: true})
+    axiosSecure.get(`/checkout/${user.email}`)
         .then(res => {
 
             setOrders(res.data);
         })
-        .catch(err => {
-            console.log(err);
-        })
+        
+        
 
     return (
         <div>
