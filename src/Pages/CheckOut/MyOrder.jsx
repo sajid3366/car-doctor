@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import CheckOutDetails from "./CheckOutDetails";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
@@ -8,13 +8,15 @@ const MyOrder = () => {
     const [orders, setOrders] = useState([])
     const axiosSecure = UseAxiosSecure();
 
-    axiosSecure.get(`/checkout/${user.email}`)
-        .then(res => {
+    useEffect(() => {
+        axiosSecure.get(`/checkout/${user.email}`)
+            .then(res => {
 
-            setOrders(res.data);
-        })
-        
-        
+                setOrders(res.data);
+            })
+    }, [axiosSecure])
+
+
 
     return (
         <div>

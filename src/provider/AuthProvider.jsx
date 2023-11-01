@@ -19,7 +19,7 @@ const AuthProvider = ({ children }) => {
         return createUserWithEmailAndPassword(auth, email, password)
     }
 
-    const logIn = (email, password) =>{
+    const logIn = (email, password) => {
         setLoading(true)
         return signInWithEmailAndPassword(auth, email, password);
     }
@@ -43,26 +43,28 @@ const AuthProvider = ({ children }) => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
             const userEmail = currentUser?.email || user?.emai;
             const loggedUser = { email: userEmail };
-
+            setLoading(false);
             setUser(currentUser)
             console.log(currentUser);
-            setLoading(false);
             // for token if usesr exists
             if (currentUser) {
-                axios.post('https://car-doctor-server-jet-sigma.vercel.app/jwt', loggedUser, {withCredentials: true})
+                axios.post('http://localhost:5000/jwt', loggedUser, { withCredentials: true })
                     .then(res => {
-                        console.log('token response',res.data);
+                        console.log('token response', res.data);
+                        
                     })
-                    .catch(err =>{
+                    .catch(err => {
                         console.log(err);
                     })
             }
-            else{
-                axios.post('https://car-doctor-server-jet-sigma.vercel.app/logout', loggedUser, {withCredentials: true})
-                .then(res =>{
-                    console.log(res.data);
-                })
+            else {
+                axios.post('http://localhost:5000/logout', loggedUser, { withCredentials: true })
+                    .then(res => {
+                        console.log(res.data);
+                    })
             }
+            
+
         });
         return () => {
             return unsubscribe()

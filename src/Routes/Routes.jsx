@@ -27,13 +27,13 @@ const router = createBrowserRouter([
       {
         path: "/checkout/:id",
         element:<PrivateRoute> <CheckOut></CheckOut></PrivateRoute>,
-        loader: ({params}) => fetch(`https://car-doctor-server-jet-sigma.vercel.app/services/${params.id}`)
+        loader: ({params}) => fetch(`http://localhost:5000/services/${params.id}`)
         
       },
       {
         path:"/myorder",
         element: <PrivateRoute><MyOrder></MyOrder></PrivateRoute>,
-        loader: () => fetch(`https://car-doctor-server-jet-sigma.vercel.app/checkout`)
+        loader: () => fetch(`http://localhost:5000/checkout`)
       }
     ]
   },
